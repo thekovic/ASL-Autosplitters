@@ -10,7 +10,7 @@ state("DOOM64_x64", "Jun 10 2022 Steam")
 }
 state("DOOM64_x64", "May 23 2022 GOG")
 {
-	int map: 0x714F4C;
+    int map: 0x714F4C;
     int warpTarget: 0x5300D8;
     int inGameTimer: 0x746970;
     int mainMenu: 0x527C04;
@@ -22,10 +22,10 @@ state("DOOM64_x64", "May 23 2022 GOG")
 startup
 {
     vars.gameTimer = 0f;
-	
+    
     settings.Add("ILstart", false, "IL Autostart");
     settings.Add("warped", false, "Warped category run");
-	settings.Add("eb", false, "Ethereal Breakdown run");
+    settings.Add("eb", false, "Ethereal Breakdown run");
 }
 
 init
@@ -47,7 +47,7 @@ init
 
 start
 {
-	if (settings["eb"])
+    if (settings["eb"])
     {
         if ((current.map > 1 && current.map < 33) && current.mainMenu != 1)
         {
@@ -89,7 +89,7 @@ gameTime
         vars.gameTimer += delta;
     }
 
-	return TimeSpan.FromSeconds(vars.gameTimer / 30f);
+    return TimeSpan.FromSeconds(vars.gameTimer / 30f);
 }
 
 split
@@ -138,5 +138,5 @@ isLoading
 
 onReset
 {
-	vars.gameTimer = 0f;
+    vars.gameTimer = 0f;
 }

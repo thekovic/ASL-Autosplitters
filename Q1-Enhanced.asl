@@ -1,13 +1,13 @@
 state("Quake_x64_steam", "Steam")
 {
-	string255 map: 0x18DDE30;
+    string255 map: 0x18DDE30;
     int intermission: 0x9DD3AEC;
     int menu: 0xE7AC84;
 }
 
 state("Quake_Shipping_Playfab_GOG_x64", "GOG")
 {
-	string255 map: 0x18A4B70;
+    string255 map: 0x18A4B70;
     int intermission: 0x9D9A68C;
     int menu: 0xE566F4;
 }
@@ -63,7 +63,7 @@ init
 
 start
 {
-	if (settings["episodeRun"]) 
+    if (settings["episodeRun"]) 
     {
         if (Array.IndexOf(vars.episodeStarts, current.map) > -1)
         {
@@ -137,5 +137,5 @@ isLoading
 
 onReset
 {
-	vars.listVisitedMaps.Clear();
+    vars.listVisitedMaps.Clear();
 }

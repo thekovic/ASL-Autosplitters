@@ -14,14 +14,14 @@ state("Indy3d")
 
 startup
 {
-	settings.Add("all_treasures", false, "All Treasures splitting");
-	settings.SetToolTip("all_treasures", "Enabling this option will split on every treasure pick-up.");
+    settings.Add("all_treasures", false, "All Treasures splitting");
+    settings.SetToolTip("all_treasures", "Enabling this option will split on every treasure pick-up.");
 }
 
 init
 {
     // Get StopWatch for counting time while the game is paused
-	vars.pauseTimer = new Stopwatch();
+    vars.pauseTimer = new Stopwatch();
     vars.lastPauseTime = 0f;
     vars.gameTimer = 0f;
 }
@@ -61,14 +61,14 @@ gameTime
     vars.lastPauseTime = vars.pauseTimer.ElapsedMilliseconds;
 
     // Return game time object
-	return TimeSpan.FromMilliseconds(vars.gameTimer);
+    return TimeSpan.FromMilliseconds(vars.gameTimer);
 }
 
 start
 {   
     // Start when the starting cutscene starts
-	// (prevents early start of the timer for RTA after you click the Start New Game button but before
-	//  the level starts playing)
+    // (prevents early start of the timer for RTA after you click the Start New Game button but before
+    //  the level starts playing)
     // Special case for Nub's Tomb which has no starting cutscene
     if (current.cutscene > old.cutscene || current.missionNumber == 14 && current.isLoading < old.isLoading)
     {
@@ -77,8 +77,8 @@ start
         vars.pauseTimer.Reset();
         return true;
     }
-	
-	//Coords for the begin of Canyon
+    
+    //Coords for the begin of Canyon
     /*if (current.missionNumber == 1 && current.posX <= -0.72 && current.posY >= 1.41)
     {
         return true;
@@ -92,14 +92,14 @@ split
     {
         return true; 
     }
-	
-	//Split by treasure
+    
+    //Split by treasure
     if (settings["all_treasures"] && current.treasureCounter > old.treasureCounter)
     {
         return true;
     }
-	
-	// Last split at the end of Peru
+    
+    // Last split at the end of Peru
     if (current.missionNumber == 17 && current.credits != 0)
     {
         return true;

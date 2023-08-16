@@ -1,8 +1,15 @@
 state("quake2ex_gog", "GOG")
 {
-	string255 map: "game_x64.dll", 0x239050;
+    string255 map: "game_x64.dll", 0x239050;
     int intermission: "game_x64.dll", 0x1CDD38;
     int menu: 0x6EB6FC;
+}
+
+state("quake2ex_steam", "Steam")
+{
+    string255 map: "game_x64.dll", 0x239050;
+    int intermission: "game_x64.dll", 0x1CDD38;
+    int menu: 0x6F4E7C;
 }
 
 startup
@@ -12,6 +19,25 @@ startup
 
 init
 {
+    switch (modules.First().ModuleMemorySize)
+    {
+        case 39395328:
+            version = "Steam";
+            break;
+        case 39354368:
+            version = "GOG";
+            break;
+        default:
+            version = "UNKNOWN";
+            MessageBox.Show
+            (
+                timer.Form,
+                "Quake 2 Enhanced autosplitter startup failure. \nCould not recognize what version of the game you are running",
+                "Quake 2 Enhanced startup failure", MessageBoxButtons.OK, MessageBoxIcon.Error
+            );
+            break;
+    }
+
     vars.lastMap = "";
     vars.listVisitedMaps = new List<string>();
     vars.campaignStarts = new string[] {
@@ -74,5 +100,5 @@ isLoading
 
 onReset
 {
-	vars.listVisitedMaps.Clear();
+    vars.listVisitedMaps.Clear();
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="34">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"MissionNumber"</Description>
+      <LastState Value="1" RealAddress="005552E8"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Indy3D.exe" +0139C0</Address>
+      <Offsets>
+        <Offset>168</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"CutScene"</Description>
+      <LastState Value="0" RealAddress="0055EF1C"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Indy3D.exe" + 0002B78C</Address>
+      <Offsets>
+        <Offset>4</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"isMenuOpen"</Description>
+      <LastState Value="0" RealAddress="005544A0"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Indy3D.exe" + 00014204</Address>
+      <Offsets>
+        <Offset>0</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"isGameOpen"</Description>
+      <LastState Value="0" RealAddress="00555668"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Indy3D.exe" + 0001F1F0</Address>
+      <Offsets>
+        <Offset>8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"isLoading"</Description>
+      <LastState Value="0" RealAddress="00553850"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>"Indy3D.exe" + 00013224</Address>
+      <Offsets>
+        <Offset>0</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"coordsX"</Description>
+      <LastState Value="0.9161501527" RealAddress="017FE594"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>"Indy3D.exe" + 032304</Address>
+      <Offsets>
+        <Offset>918</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"coordsY"</Description>
+      <LastState Value="0.5421389937" RealAddress="017FE598"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>"Indy3D.exe" + 032304</Address>
+      <Offsets>
+        <Offset>91C</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>15</ID>
+      <Description>"credits"</Description>
+      <LastState Value="0" RealAddress="005647CC"/>
+      <VariableType>2 Bytes</VariableType>
+      <Address>"Indy3D.exe"+000415CC</Address>
+      <Offsets>
+        <Offset>22C</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>19</ID>
+      <Description>"treasureCounter"</Description>
+      <LastState Value="1" RealAddress="00555120"/>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>2 Bytes</VariableType>
+      <Address>"Indy3D.exe"+00016A94</Address>
+      <Offsets>
+        <Offset>4</Offset>
+      </Offsets>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <Comments>Info about this table:
+</Comments>
+</CheatTable>

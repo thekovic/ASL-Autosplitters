@@ -1,14 +1,14 @@
 state("quake2ex_gog", "GOG")
 {
-    string255 map: "game_x64.dll", 0x239050;
-    int intermission: "game_x64.dll", 0x1CDD38;
+    string255 map: 0x131A800;
+    int intermission: 0x9B800C;
     int menu: 0x6EB6FC;
 }
 
 state("quake2ex_steam", "Steam")
 {
-    string255 map: "game_x64.dll", 0x239050;
-    int intermission: "game_x64.dll", 0x1CDD38;
+    string255 map: 0x1323D60;
+    int intermission: 0x9C155C;
     int menu: 0x6F4E7C;
 }
 

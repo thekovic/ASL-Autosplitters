@@ -14,7 +14,7 @@ state("quake2ex_steam", "Steam")
 
 startup
 {
-    settings.Add("ignoreIntermission", false, "Don't time intermissions");
+    settings.Add("ignoreIntermission", true, "Don't time intermissions");
 }
 
 init
@@ -59,7 +59,7 @@ start
 
 split
 {
-    if ((Array.IndexOf(vars.campaignEnds, current.map) > -1) && current.intermission > 0)
+    if ((Array.IndexOf(vars.campaignEnds, current.map) > -1) && current.intermission > 6)
     {
         vars.listVisitedMaps.Add(vars.lastMap + current.map);
         vars.lastMap = current.map;
@@ -96,6 +96,11 @@ isLoading
     }
 
     return false;
+}
+
+onStart
+{
+    vars.lastMap = current.map;
 }
 
 onReset

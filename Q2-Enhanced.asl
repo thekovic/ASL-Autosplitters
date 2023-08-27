@@ -3,6 +3,9 @@ state("quake2ex_gog", "GOG")
     string255 map: 0x131A800;
     int intermission: 0x9B800C;
     int menu: 0x6EB6FC;
+    int loading: 0x1C90B60;
+    //int loading2: 0x1AC5978;
+    //int loading3: 0x1C917FC;
 }
 
 state("quake2ex_steam", "Steam")
@@ -10,11 +13,7 @@ state("quake2ex_steam", "Steam")
     string255 map: 0x1323D60;
     int intermission: 0x9C155C;
     int menu: 0x6F4E7C;
-}
-
-startup
-{
-    settings.Add("ignoreIntermission", true, "Don't time intermissions");
+    int loading: 0x1C9A170;
 }
 
 init
@@ -90,7 +89,7 @@ reset
 
 isLoading
 {
-    if (settings["ignoreIntermission"] && (current.intermission > 0))
+    if ((current.intermission != 0) || (current.loading != 0))
     {
         return true;
     }

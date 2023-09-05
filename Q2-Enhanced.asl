@@ -153,7 +153,12 @@ reset
 
 isLoading
 {
-    if ((current.intermission != 0) || (current.loading != 0))
+    if (current.intermission != 0)
+    {
+        return true;
+    }
+
+    if (current.loading > 0 && current.loading < 32)
     {
         return true;
     }

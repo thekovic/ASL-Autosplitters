@@ -1,15 +1,20 @@
 state("Indy3d")
 {
-    int missionNumber : 0x0139C0, 0x168;
-    float coordsX : 0x032304, 0x918;
-    float coordsY : 0x032304, 0x91C;
-    int cutscene : 0x1401404;
-    int isMenuOpen : 0x00014204, 0x0;
-    int isGameOpen : 0x0001F1F0, 0x8;
-    int isLoading : 0x00013224, 0x0;
-    int credits : 0x000415CC, 0x22C;
-    int treasureCounter : 0x00016A94, 0x4;
+    // UNUSED
+    //float coordsX : 0x032304, 0x918;
+    //float coordsY : 0x032304, 0x91C;
+
     int msecTimer : 0x16B878;
+    int isLoading : 0x153850;
+
+    int levelNumber : 0x1552E8;
+
+    int isInventoryOpen : 0x1544A0;
+    int isGameOpen : 0x0001F1F0, 0x8;
+    int cutscene : 0x1401404;
+    int credits : 0x1647CC;
+
+    int treasureCounter : 0x155120;
 }
 
 startup
@@ -42,18 +47,18 @@ gameTime
     }
 
     // Start inventory timer
-    if (old.isMenuOpen == 0)
+    if (old.isInventoryOpen == 0)
     {
         vars.pauseTimer.Start();
     }
     // Stop inventory timer
-    else if (current.isMenuOpen == 0)
+    else if (current.isInventoryOpen == 0)
     {
         vars.pauseTimer.Reset();
         vars.lastPauseTime = 0f;
     }
     // Add inventory timer delta
-    if (current.isMenuOpen > 0 && current.isGameOpen == 1)
+    if (current.isInventoryOpen > 0 && current.isGameOpen == 1)
     {
         vars.gameTimer += (vars.pauseTimer.ElapsedMilliseconds  - vars.lastPauseTime);
     }
@@ -70,25 +75,19 @@ start
     // (prevents early start of the timer for RTA after you click the Start New Game button but before
     //  the level starts playing)
     // Special case for Nub's Tomb which has no starting cutscene
-    if (current.cutscene > old.cutscene || current.missionNumber == 14 && current.isLoading < old.isLoading)
+    if (current.cutscene > old.cutscene || current.levelNumber == 14 && current.isLoading < old.isLoading)
     {
         vars.lastPauseTime = 0f;
         vars.gameTimer = 0f;
         vars.pauseTimer.Reset();
         return true;
     }
-    
-    //Coords for the begin of Canyon
-    /*if (current.missionNumber == 1 && current.posX <= -0.72 && current.posY >= 1.41)
-    {
-        return true;
-    }*/
 }
 
 split
 {   
     //Split by level
-    if (current.missionNumber > old.missionNumber)
+    if (current.levelNumber > old.levelNumber)
     {
         return true; 
     }
@@ -100,7 +99,7 @@ split
     }
     
     // Last split at the end of Peru
-    if (current.missionNumber == 17 && current.credits != 0)
+    if (current.levelNumber == 17 && current.credits != 0)
     {
         return true;
     }

@@ -21,10 +21,7 @@ startup
 {
     settings.Add("all_treasures", false, "All Treasures splitting");
     settings.SetToolTip("all_treasures", "Enabling this option will split on every treasure pick-up.");
-}
 
-init
-{
     // Get StopWatch for counting time while the game is paused
     vars.pauseTimer = new Stopwatch();
     vars.lastPauseTime = 0f;

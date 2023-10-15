@@ -1,30 +1,27 @@
 state("quake2ex_gog", "GOG")
 {
-    string255 map: 0x131A800;
-    int intermission: 0x9B800C;
-    int menu: 0x6EB6FC;
-    //int loading: 0x1C90B60; --causes slowdown
-    int loading: 0x1AC5978;
-    //int loading3: 0x1C917FC;
+    string255 map: 0x1347E10;
+    int intermission: 0x9C52AC;
+    int menu: 0x6F862C;
+    int loading: 0x1AF32D8;
 }
 
 state("quake2ex_steam", "Steam")
 {
-    string255 map: 0x1323D60;
-    int intermission: 0x9C155C;
-    int menu: 0x6F4E7C;
-    //int loading: 0x1C9A170; --causes slowdown
-    int loading: 0x1ACEF88;
+    string255 map: 0x1351350;
+    int intermission: 0x7EE4CC;
+    int menu: 0x701DAC;
+    int loading: 0x1AFC8C8;
 }
 
 init
 {
     switch (modules.First().ModuleMemorySize)
     {
-        case 39395328:
+        case 39583744:
             version = "Steam";
             break;
-        case 39354368:
+        case 39542784:
             version = "GOG";
             break;
         default:

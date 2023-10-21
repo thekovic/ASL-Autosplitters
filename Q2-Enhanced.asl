@@ -4,6 +4,8 @@ state("quake2ex_gog", "GOG")
     int intermission: 0x9C52AC;
     int menu: 0x6F862C;
     int loading: 0x1AF32D8;
+    int isGameplay: 0x157C124;
+    //int isGameplay2: 0x158566C;
 }
 
 state("quake2ex_steam", "Steam")
@@ -12,6 +14,8 @@ state("quake2ex_steam", "Steam")
     int intermission: 0x7EE4CC;
     int menu: 0x701DAC;
     int loading: 0x1AFC8C8;
+    int isGameplay: 0x1585664;
+    //int isGameplay2: 0x158566C;
 }
 
 init
@@ -157,6 +161,11 @@ isLoading
     }
 
     if (current.loading != 0)
+    {
+        return true;
+    }
+
+    if (current.isGameplay == 0)
     {
         return true;
     }

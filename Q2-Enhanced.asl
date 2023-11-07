@@ -10,11 +10,11 @@ state("quake2ex_gog", "GOG")
 
 state("quake2ex_steam", "Steam")
 {
-    string255 map: 0x1351350;
-    int intermission: 0x7EE4CC;
-    int menu: 0x701DAC;
-    int loading: 0x1AFC8C8;
-    int isGameplay: 0x1585664;
+    string255 map: 0x1353650;
+    int intermission: 0x7F07CC;
+    int menu: 0x703DAC;
+    int loading: 0x1CCAA6C;
+    int isGameplay: 0x1587964;
     //int isGameplay2: 0x158566C;
 }
 
@@ -22,7 +22,7 @@ init
 {
     switch (modules.First().ModuleMemorySize)
     {
-        case 39583744:
+        case 39596032:
             version = "Steam";
             break;
         case 39542784:
@@ -38,7 +38,7 @@ init
             );
             break;
     }
-
+    
     // Name of last valid map we visited
     vars.lastMap = "";
     // List of level changes that were already used (eg. base1base2 or base2base1 or base2base3)

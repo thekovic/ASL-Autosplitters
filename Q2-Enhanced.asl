@@ -15,7 +15,7 @@ state("quake2ex_steam", "Steam")
     int menu: 0x703DAC;
     int loading: 0x1CCAA6C;
     int isGameplay: 0x1587964;
-    //int isGameplay2: 0x158566C;
+    int isGameplay2: 0x158796C;
 }
 
 init
@@ -123,7 +123,7 @@ split
     }
 
     // Intermission screen
-    if (current.intermission > 6)
+    if (current.intermission != 0)
     {
         // Always split on campaign end
         if (Array.IndexOf(vars.campaignEnds, current.map) > -1)
@@ -165,7 +165,7 @@ isLoading
         return true;
     }
 
-    if (current.isGameplay == 0)
+    if (current.isGameplay == 0 || current.isGameplay2 == 0)
     {
         return true;
     }

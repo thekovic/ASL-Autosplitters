@@ -123,7 +123,8 @@ split
     }
 
     // Intermission screen
-    if (current.intermission != 0)
+    // Normal intermission reads as 7; some teleporters can cause this to read 6 for a frame which would cause fake splits
+    if (current.intermission > 6)
     {
         // Always split on campaign end
         if (Array.IndexOf(vars.campaignEnds, current.map) > -1)

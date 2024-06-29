@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="34">
+<CheatTable CheatEngineTableVersion="45">
   <CheatEntries>
     <CheatEntry>
       <ID>0</ID>
       <Description>"MissionNumber"</Description>
-      <LastState Value="1" RealAddress="005552E8"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>"Indy3D.exe" +0139C0</Address>
@@ -15,7 +14,6 @@
     <CheatEntry>
       <ID>1</ID>
       <Description>"CutScene"</Description>
-      <LastState Value="0" RealAddress="0055EF1C"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>"Indy3D.exe" + 0002B78C</Address>
@@ -26,7 +24,6 @@
     <CheatEntry>
       <ID>2</ID>
       <Description>"isMenuOpen"</Description>
-      <LastState Value="0" RealAddress="005544A0"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>"Indy3D.exe" + 00014204</Address>
@@ -37,7 +34,6 @@
     <CheatEntry>
       <ID>3</ID>
       <Description>"isGameOpen"</Description>
-      <LastState Value="0" RealAddress="00555668"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>"Indy3D.exe" + 0001F1F0</Address>
@@ -48,7 +44,6 @@
     <CheatEntry>
       <ID>4</ID>
       <Description>"isLoading"</Description>
-      <LastState Value="0" RealAddress="00553850"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>"Indy3D.exe" + 00013224</Address>
@@ -59,7 +54,6 @@
     <CheatEntry>
       <ID>5</ID>
       <Description>"coordsX"</Description>
-      <LastState Value="0.9161501527" RealAddress="017FE594"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Float</VariableType>
       <Address>"Indy3D.exe" + 032304</Address>
@@ -70,7 +64,6 @@
     <CheatEntry>
       <ID>6</ID>
       <Description>"coordsY"</Description>
-      <LastState Value="0.5421389937" RealAddress="017FE598"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>Float</VariableType>
       <Address>"Indy3D.exe" + 032304</Address>
@@ -81,7 +74,6 @@
     <CheatEntry>
       <ID>15</ID>
       <Description>"credits"</Description>
-      <LastState Value="0" RealAddress="005647CC"/>
       <VariableType>2 Bytes</VariableType>
       <Address>"Indy3D.exe"+000415CC</Address>
       <Offsets>
@@ -91,13 +83,64 @@
     <CheatEntry>
       <ID>19</ID>
       <Description>"treasureCounter"</Description>
-      <LastState Value="1" RealAddress="00555120"/>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>2 Bytes</VariableType>
       <Address>"Indy3D.exe"+00016A94</Address>
       <Offsets>
         <Offset>4</Offset>
       </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>20</ID>
+      <Description>"timer"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>indy3d.exe + 16B878</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>16</ID>
+      <Description>"JonesHud_pCurChangedMenuItem"</Description>
+      <VariableType>4 Bytes</VariableType>
+      <Address>Indy3d.exe+155284</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>21</ID>
+      <Description>"Auto Assemble script"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(orig_address, "Indy3d.exe"+14238)
+define(orig_code, 75 23 68 80 97 83 01)
+
+[ENABLE]
+
+assert(orig_address, orig_code)
+alloc(code_injection,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+code_injection:
+  mov dword ptr [Indy3d.exe+155284], 0
+
+originalcode:
+  jne Indy3d.exe+1425D
+  push Indy3d.exe+1439780
+
+exit:
+  jmp returnhere
+
+orig_address:
+  jmp code_injection
+  nop 2
+returnhere:
+
+[DISABLE]
+
+orig_address:
+  db orig_code
+
+dealloc(newmem)
+
+</AssemblerScript>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>

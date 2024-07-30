@@ -26,6 +26,8 @@ startup
     vars.pauseTimer = new Stopwatch();
     vars.lastPauseTime = 0f;
     vars.gameTimer = 0f;
+
+    vars.levelSelected = false;
 }
 
 gameTime
@@ -68,11 +70,24 @@ gameTime
 
 start
 {   
+    // Level ID == 0 signifies custom level.
+    // However, level ID == 0 is also the default state so we don't want to handle
+    // start for custom level until we're sure that a level has begun loading.
+    if (current.levelNumber == 0 && current.isLoading == 1)
+    {
+        vars.levelSelected = true;
+    }
+
     // Start when the starting cutscene starts
-    // (prevents early start of the timer for RTA after you click the Start New Game button but before
-    //  the level starts playing)
-    // Special case for Nub's Tomb which has no starting cutscene
-    if (current.cutscene > old.cutscene || current.levelNumber == 14 && current.isLoading < old.isLoading)
+    // (prevents early start of the timer for RTA after you click the Start New Game button
+    // but before the level starts playing).
+    if ((current.cutscene > old.cutscene)
+
+    // Special case for Nub's Tomb (which has no starting cutscene).
+    || (current.levelNumber == 14 && current.isLoading < old.isLoading)
+
+    // Special case for custom levels with ID == 0 (which may have no starting cutscene).
+    || (current.levelNumber == 0 && vars.levelSelected == true && current.isLoading < old.isLoading))
     {
         vars.lastPauseTime = 0f;
         vars.gameTimer = 0f;
@@ -109,6 +124,7 @@ isLoading
 
 onReset
 {
+    vars.levelSelected = false;
     vars.gameTimer = 0f;
     vars.lastPauseTime = 0f;
     vars.pauseTimer.Reset();

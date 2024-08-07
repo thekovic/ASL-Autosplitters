@@ -1,7 +1,7 @@
 state("maxpayne")
 {
 	int onLoadScreen : 0x4A6400, 0x80, 0xB4;
-	int comic : "e2mfc.dll", 0x651DC;
+	int viewingComic : "e2mfc.dll", 0x651DC;
 	int inCutscene : 0x4B5080;
 	int level : 0x4B1370;
 	int lastLevelComplete : 0x4B408C, 0x154;
@@ -17,7 +17,7 @@ startup
 {
 	vars.EPSILON = 0.0001;
 
-	vars.LEVEL_NUMS = new Dictionary<int, Tuple<double, double, double>>()
+	vars.LEVELS_START_POS = new Dictionary<int, Tuple<double, double, double>>()
 	{
 		{651, new Tuple<double, double, double>(-0.63, -0.235, -13.37)}, 			//P1C0
 		{1608, new Tuple<double, double, double>(-3.72829, 0.265, 2.93426)}, 		//P1C1
@@ -48,6 +48,8 @@ startup
 		{402, new Tuple<double, double, double>(3.755, -1.235, 3.63)} 				//Secret Finale
 	};
 
+	vars.LEVEL_NUMS = new int[27] {651, 1608, 1260, 2094, 1656, 1338, 1254, 1344, 1347, 234, 417, 1179, 1086, 897, 1581, 1620, 714, 1146, 1920, 2781, 1209, 1401, 1014, 1110, 1374, 531, 402};
+	
 	settings.Add("nymRunMode", false, "NYM Run Mode");
 	settings.SetToolTip("nymRunMode", "Times the current run using the in game New York Minute timer.");
 
@@ -57,17 +59,17 @@ startup
 
 init
 {
-	vars.levelIndex = 1;
+	vars.nextLevelIndex = 1;
 	vars.autoEndDone = false;
 	vars.resetValid = false;
 	vars.playerInStartPosition = false;
 	vars.playerInStartPosSet = false;
+	vars.shouldSplit = false;
 	vars.tutorialStatusIncrementedCount = 0;
-	vars.keyCount = 1;
 	vars.gameTime = new TimeSpan(0, 0, 0, 0);
-	vars.tempX = new Tuple<double, double>(0, 0);
-	vars.tempY = new Tuple<double, double>(0, 0);
-	vars.tempZ = new Tuple<double, double>(0, 0);
+	vars.startPositionX = new Tuple<double, double>(0, 0);
+	vars.startPositionY = new Tuple<double, double>(0, 0);
+	vars.startPositionZ = new Tuple<double, double>(0, 0);
 }
 
 update
@@ -76,38 +78,33 @@ update
 
 	if (current.level > 0 && current.level != old.level)
 	{
-		vars.tempX = new Tuple<double, double>(vars.LEVEL_NUMS[current.level].Item1 - vars.EPSILON, vars.LEVEL_NUMS[current.level].Item1 + vars.EPSILON);
-		vars.tempY = new Tuple<double, double>(vars.LEVEL_NUMS[current.level].Item2 - vars.EPSILON, vars.LEVEL_NUMS[current.level].Item2 + vars.EPSILON);
-		vars.tempZ = new Tuple<double, double>(vars.LEVEL_NUMS[current.level].Item3 - vars.EPSILON, vars.LEVEL_NUMS[current.level].Item3 + vars.EPSILON);
+		// defines the coordinate range of Max's starting position for the current level (to deal with float inaccuracies)
+		vars.startPositionX = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item1 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item1 + vars.EPSILON);
+		vars.startPositionY = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item2 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item2 + vars.EPSILON);
+		vars.startPositionZ = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item3 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item3 + vars.EPSILON);
 	}
 
-	print("Current Level: " + current.level + "\nComic: " + current.comic +
-				"\nIn Cutscene: " + current.inCutscene + 
-				"\nPlayer Position: (" + current.playerX + ", " + current.playerY + ", " + current.playerZ + ")" + 
-				"\nX Vals: (" + vars.tempX.Item1 + ", " + vars.tempX.Item2 + ")" +
-				"\nY Vals: (" + vars.tempY.Item1 + ", " + vars.tempY.Item2 + ")" +
-				"\nZ Vals: (" + vars.tempZ.Item1 + ", " + vars.tempZ.Item2 + ")" +
-				"\n Game Time: " + current.nymGameTime +
-				"\n Last Level Complete: " + current.lastLevelComplete);
-
-	if (settings["ilRunMode"] && current.level > 0 && current.comic == 0 && current.inCutscene == 0 &&
-			current.playerX >= vars.tempX.Item1 && current.playerX <= vars.tempX.Item2 &&
-			current.playerY >= vars.tempY.Item1 && current.playerY <= vars.tempY.Item2 &&
-			current.playerZ >= vars.tempZ.Item1 && current.playerZ <= vars.tempZ.Item2)
+	if (settings["ilRunMode"] && current.level > 0 && current.viewingComic == 0 && current.inCutscene == 0 &&
+			current.playerX >= vars.startPositionX.Item1 && current.playerX <= vars.startPositionX.Item2 &&
+			current.playerY >= vars.startPositionY.Item1 && current.playerY <= vars.startPositionY.Item2 &&
+			current.playerZ >= vars.startPositionZ.Item1 && current.playerZ <= vars.startPositionZ.Item2)
 	{
 		vars.playerInStartPosition = true;
 		vars.playerInStartPosSet = true;
 	}
 
-	if (!settings["ilRunMode"] && current.level == 651 && current.comic == 0 && current.inCutscene == 0 &&
-			current.playerX >= vars.tempX.Item1 && current.playerX <= vars.tempX.Item2 &&
-			current.playerY >= vars.tempY.Item1 && current.playerY <= vars.tempY.Item2 &&
-			current.playerZ >= vars.tempZ.Item1 && current.playerZ <= vars.tempZ.Item2)
+	if (!settings["ilRunMode"] && current.level == 651 && current.viewingComic == 0 && current.inCutscene == 0 &&
+			current.playerX >= vars.startPositionX.Item1 && current.playerX <= vars.startPositionX.Item2 &&
+			current.playerY >= vars.startPositionY.Item1 && current.playerY <= vars.startPositionY.Item2 &&
+			current.playerZ >= vars.startPositionZ.Item1 && current.playerZ <= vars.startPositionZ.Item2)
 	{
 		vars.playerInStartPosition = true;
 		vars.playerInStartPosSet = true;
 	}
 
+	// almost every time you kill an enemy in the tutorial, the so-called tutorial status will increment...
+	// we can use this to tell when the tutorial is complete, since killing enemies is the main and final goal
+	// note: there are some other tutorial actions that increment the tutorial status
 	if (current.level == 531 && current.tutorialStatus == old.tutorialStatus + 1)
 	{
 		vars.tutorialStatusIncrementedCount += 1;
@@ -149,64 +146,61 @@ onReset
 	vars.resetValid = false;
 	vars.autoEndDone = false;
 	vars.tutorialStatusIncrementedCount = 0;
-	vars.levelIndex = 1;
-	vars.gameTime = TimeSpan.FromSeconds(0);
+	vars.nextLevelIndex = 1;
+	vars.gameTime = new TimeSpan(0, 0, 0, 0);
 }
 
 split
 {
+	vars.shouldSplit = false;
+
 	if (settings["ilRunMode"] && !vars.autoEndDone)
 	{
+		// split at the end of P3C8 when the final cutscene begins
 		if (current.level == 1374 && current.inCutscene == 1 && current.lastLevelComplete == 0)
 		{
-			vars.autoEndDone = true;
-			vars.resetValid = true;
-			return true;
+			vars.shouldSplit = true;
 		}
+		// split at the end of the Tutorial when the final enemy has been killed
 		else if (current.level == 531 && vars.tutorialStatusIncrementedCount == 8)
 		{
-			vars.autoEndDone = true;
-			vars.resetValid = true;
-			return true;
+			vars.shouldSplit = true;
 		}
+		// split at the end of the Secret Finale when all the enemies are dead
 		else if (current.level == 402 && current.secretFinaleComplete == 1)
 		{
-			vars.autoEndDone = true;
-			vars.resetValid = true;
-			return true;
+			vars.shouldSplit = true;
 		}
+		// split at the loading screen at the end for all the other levels
 		else if (current.level != old.level && current.level > 0)
 		{
-			vars.autoEndDone = true;
-			vars.resetValid = true;
-			return true;
+			vars.shouldSplit = true;
 		}
 	}
 
-	if (!settings["ilRunMode"])
+	if (!settings["ilRunMode"] && !vars.autoEndDone)
 	{
 		if (current.level != old.level && current.level > 0)
 		{
-			vars.keyCount = 0;
-
-			foreach (int currentKey in vars.LEVEL_NUMS.Keys)
+			if (current.level == vars.LEVEL_NUMS[vars.nextLevelIndex])
 			{
-				if (vars.keyCount == vars.levelIndex && currentKey == current.level)
-				{
-					vars.levelIndex++;
-					return true;
-				}
-
-				vars.keyCount++;
+				vars.nextLevelIndex++;
+				vars.shouldSplit = true;
 			}
 		}
 
-		if (!vars.autoEndDone && current.level == 1374 && current.inCutscene == 1 && current.lastLevelComplete == 0)
+		//special case to autosplit once the final cutscene in P3C8 has started
+		if (current.level == 1374 && current.inCutscene == 1 && current.lastLevelComplete == 0)
 		{
 			vars.autoEndDone = true;
-			vars.resetValid = true;
-			return true;
+			vars.shouldSplit = true;
 		}
+	}
+
+	if (vars.shouldSplit)
+	{
+		vars.resetValid = true;
+		return true;
 	}
 }
 
@@ -216,6 +210,8 @@ gameTime
 	{
 		if (current.level > 0 && current.nymGameTime > vars.EPSILON)
 		{
+			//just take the time from the game, as it keeps the entire time of the run
+			//doing it this way allows loading quick saves or autosaves to correctly adjust the timer
 			vars.gameTime = TimeSpan.FromSeconds(current.nymGameTime);
 		}
 		
@@ -231,6 +227,6 @@ isLoading
 	}
 	else
 	{
-		return current.onLoadScreen > 0 && current.comic == 0;
+		return current.onLoadScreen > 0 && current.viewingComic == 0;
 	}
 }

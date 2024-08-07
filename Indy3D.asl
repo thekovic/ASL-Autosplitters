@@ -21,6 +21,8 @@ startup
 {
     settings.Add("all_treasures", false, "All Treasures splitting");
     settings.SetToolTip("all_treasures", "Enabling this option will split on every treasure pick-up.");
+    settings.Add("custom_levels", false, "Enable custom level support");
+    settings.SetToolTip("custom_levels", "Enabling this option will allow to split on more generic conditions, designed to support speedrunning custom levels which may or may not have opening cutscenes. Leave this disabled if you're playing the base campaign and you wish to prevent potential false positive starts.");
 
     // Get StopWatch for counting time while the game is paused
     vars.pauseTimer = new Stopwatch();
@@ -87,8 +89,9 @@ start
     || (current.levelNumber == 14 && current.isLoading < old.isLoading)
 
     // Special case for custom levels with ID == 0 (which may have no starting cutscene).
-    || (current.levelNumber == 0 && vars.levelSelected == true && current.isLoading < old.isLoading))
+    || (settings["custom_levels"] && current.levelNumber == 0 && vars.levelSelected == true && current.isLoading < old.isLoading))
     {
+        vars.levelSelected = false;
         vars.lastPauseTime = 0f;
         vars.gameTimer = 0f;
         vars.pauseTimer.Reset();

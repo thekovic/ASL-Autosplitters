@@ -15,7 +15,8 @@ state("maxpayne")
 
 startup
 {
-	vars.EPSILON = 0.0001;
+	vars.EPSILON = 0.0003;
+	vars.NYM_USER_LOAD_PENALTY = 5; //5 second penalty per save loaded for NYM runs
 
 	vars.LEVELS_START_POS = new Dictionary<int, Tuple<double, double, double>>()
 	{
@@ -66,10 +67,21 @@ init
 	vars.playerInStartPosSet = false;
 	vars.shouldSplit = false;
 	vars.tutorialStatusIncrementedCount = 0;
+	vars.totalTimePenalty = 0;
 	vars.gameTime = new TimeSpan(0, 0, 0, 0);
-	vars.startPositionX = new Tuple<double, double>(0, 0);
-	vars.startPositionY = new Tuple<double, double>(0, 0);
-	vars.startPositionZ = new Tuple<double, double>(0, 0);
+
+	if (current.level > 0)
+	{
+		vars.startPositionX = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item1 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item1 + vars.EPSILON);
+		vars.startPositionY = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item2 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item2 + vars.EPSILON);
+		vars.startPositionZ = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item3 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item3 + vars.EPSILON);
+	}
+	else
+	{
+		vars.startPositionX = new Tuple<double, double>(0, 0);
+		vars.startPositionY = new Tuple<double, double>(0, 0);
+		vars.startPositionZ = new Tuple<double, double>(0, 0);
+	}
 }
 
 update
@@ -84,22 +96,21 @@ update
 		vars.startPositionZ = new Tuple<double, double>(vars.LEVELS_START_POS[current.level].Item3 - vars.EPSILON, vars.LEVELS_START_POS[current.level].Item3 + vars.EPSILON);
 	}
 
-	if (settings["ilRunMode"] && current.level > 0 && current.viewingComic == 0 && current.inCutscene == 0 &&
+	if (current.level > 0 && current.viewingComic == 0 && current.inCutscene == 0 &&
 			current.playerX >= vars.startPositionX.Item1 && current.playerX <= vars.startPositionX.Item2 &&
 			current.playerY >= vars.startPositionY.Item1 && current.playerY <= vars.startPositionY.Item2 &&
 			current.playerZ >= vars.startPositionZ.Item1 && current.playerZ <= vars.startPositionZ.Item2)
 	{
-		vars.playerInStartPosition = true;
-		vars.playerInStartPosSet = true;
-	}
-
-	if (!settings["ilRunMode"] && current.level == 651 && current.viewingComic == 0 && current.inCutscene == 0 &&
-			current.playerX >= vars.startPositionX.Item1 && current.playerX <= vars.startPositionX.Item2 &&
-			current.playerY >= vars.startPositionY.Item1 && current.playerY <= vars.startPositionY.Item2 &&
-			current.playerZ >= vars.startPositionZ.Item1 && current.playerZ <= vars.startPositionZ.Item2)
-	{
-		vars.playerInStartPosition = true;
-		vars.playerInStartPosSet = true;
+		if (settings["ilRunMode"])
+		{
+			vars.playerInStartPosition = true;
+			vars.playerInStartPosSet = true;
+		}
+		else if (current.level == 651)
+		{
+			vars.playerInStartPosition = true;
+			vars.playerInStartPosSet = true;
+		}
 	}
 
 	// almost every time you kill an enemy in the tutorial, the so-called tutorial status will increment...
@@ -148,6 +159,7 @@ onReset
 	vars.tutorialStatusIncrementedCount = 0;
 	vars.nextLevelIndex = 1;
 	vars.gameTime = new TimeSpan(0, 0, 0, 0);
+	vars.totalTimePenalty = 0;
 }
 
 split
@@ -199,7 +211,6 @@ split
 
 	if (vars.shouldSplit)
 	{
-		vars.resetValid = true;
 		return true;
 	}
 }
@@ -210,12 +221,17 @@ gameTime
 	{
 		if (current.level > 0 && current.nymGameTime > vars.EPSILON)
 		{
+			if (current.nymGameTime < old.nymGameTime - vars.EPSILON)
+			{
+				vars.totalTimePenalty += vars.NYM_USER_LOAD_PENALTY;
+			}
+
 			//just take the time from the game, as it keeps the entire time of the run
 			//doing it this way allows loading quick saves or autosaves to correctly adjust the timer
-			vars.gameTime = TimeSpan.FromSeconds(current.nymGameTime);
+			vars.gameTime = TimeSpan.FromSeconds(current.nymGameTime + vars.totalTimePenalty);
+
+			return vars.gameTime;
 		}
-		
-		return vars.gameTime;
 	}
 }
 

@@ -2,15 +2,22 @@ state("TheGreatCircle", "Update 1 (Steam)") //120745984
 {
     string32 level: "TheGreatCircle.exe", 0x4ACF4C8;
     byte mainmenu: "TheGreatCircle.exe", 0x4AD26E7;
-    string22 objective: "TheGreatCircle.exe", 0x048240E8, 0x28, 0x558, 0x1F0, 0xC0;
     string100 cutsceneid: "TheGreatCircle.exe", 0x04ABD800, 0x0;
     int InCutscene: "TheGreatCircle.exe", 0x650AFB8;
     int loading: "TheGreatCircle.exe", 0x4AB4D90;
 }
 
+state("TheGreatCircle", "Game Pass") //120168448 
+{
+    string32 level: "TheGreatCircle.exe", 0x4A79EC0;
+    byte mainmenu: "TheGreatCircle.exe", 0x4A7D0E7;
+    string100 cutsceneid: "TheGreatCircle.exe", 0x04A68200, 0x0;
+    int InCutscene: "TheGreatCircle.exe", 0x64B5838;
+    int loading: "TheGreatCircle.exe", 0x4A5F790;
+}
+
 startup
 {
-
     settings.Add("map_splits", true, "Map Change Splits");
     settings.SetToolTip("map_splits", "Enables automatic splitting on various map changes.");
     
@@ -60,14 +67,16 @@ startup
 init
 {	
     print(modules.First().ModuleMemorySize.ToString());
-	switch (modules.First().ModuleMemorySize)
-	{
+    switch (modules.First().ModuleMemorySize)
+    {
         case (120745984):
-		version = "Update 1 (Steam)";
-		break;
+            version = "Update 1 (Steam)";
+            break;
+        case (120168448):
+            version = "Game Pass";
+            break;
 	}
 }
-
 
 start
 {
@@ -123,11 +132,6 @@ split
     {
         return true;
     }
-}
-
-reset
-{
-    return (current.mainmenu == 1);
 }
 
 isLoading

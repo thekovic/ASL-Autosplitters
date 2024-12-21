@@ -1,10 +1,19 @@
-state("TheGreatCircle", "Update 1 (Steam)") //120745984 
+state("TheGreatCircle", "Steam (Update 1)") //120745984 
 {
     string32 level: "TheGreatCircle.exe", 0x4ACF4C8;
     byte mainmenu: "TheGreatCircle.exe", 0x4AD26E7;
     string100 cutsceneid: "TheGreatCircle.exe", 0x04ABD800, 0x0;
     int InCutscene: "TheGreatCircle.exe", 0x650AFB8;
     int loading: "TheGreatCircle.exe", 0x4AB4D90;
+}
+
+state("TheGreatCircle", "Steam (Update 2)") //120745984 
+{
+    string32 level: "TheGreatCircle.exe", 0x4ACE3C8;
+    byte mainmenu: "TheGreatCircle.exe", 0x4AD15E7;
+    string100 cutsceneid: "TheGreatCircle.exe", 0x04ABC700, 0x0;
+    int InCutscene: "TheGreatCircle.exe", 0x6509EB8;
+    int loading: "TheGreatCircle.exe", 0x4AB3C90;
 }
 
 state("TheGreatCircle", "Game Pass") //120168448 
@@ -62,6 +71,8 @@ startup
             settings.SetToolTip("gizeh_meetvoss", "Cutscene where Indy meets Voss in the German encampment.");
         settings.Add("gizeh_carvings", false, "Gizeh (Resonance Chamber)", "cutscene_splits");
             settings.SetToolTip("gizeh_carvings", "Cutscene when Indy enters the Resonance Chamber and inspects the Adamic carvings.");
+
+    vars.gameVersion = "Unknown";
 }
 
 init
@@ -70,10 +81,30 @@ init
     switch (modules.First().ModuleMemorySize)
     {
         case (120745984):
-            version = "Update 1 (Steam)";
+            // Test Update 1.
+            vars.gameVersion = memory.ReadString(modules.First().BaseAddress + 0x34F502F, 12);
+            if (vars.gameVersion == "umber-jasper")
+            {
+                version = "Steam (Update 1)";
+                return;
+            }
+            // Test Update 2.
+            vars.gameVersion = memory.ReadString(modules.First().BaseAddress + 0x34F2FAF, 12);
+            if (vars.gameVersion == "jasper-olive")
+            {
+                version = "Steam (Update 2)";
+                return;
+            }
+            // Can't figure it out.
+            version = "Steam (Unknown)";
             break;
         case (120168448):
             version = "Game Pass";
+            vars.gameVersion = "Game Pass";
+            break;
+        default:
+            version = "Unknown";
+            vars.gameVersion = "Unknown";
             break;
 	}
 }

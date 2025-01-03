@@ -81,6 +81,17 @@ startup
         settings.Add("gizeh_carvings", false, "Gizeh (Resonance Chamber)", "cutscene_splits");
             settings.SetToolTip("gizeh_carvings", "Cutscene when Indy enters the Resonance Chamber and inspects the Adamic carvings.");
 
+    // Map cutscene settings to their respective cutscene IDs.
+    vars.cutsceneMappings = new Dictionary<string, string>
+    {
+        {"vatican_birdwatching", "cs/vatican/ch02se02_birdwatching01_cm"},
+        {"vatican_inspectletter", "cs/vatican/ch02se03_inspectletter02_cm"},
+        {"gizeh_stonetablets", "cs/gizeh/ch03se01_stonetablets02_cm"},
+        {"gizeh_lighter", "de/gizeh/ch03al01_asmaatalk01_de"},
+        {"gizeh_meetvoss", "cs/gizeh/ch03se02_meetvoss02_cm"},
+        {"gizeh_carvings", "cs/gizeh/ch03se03_carvings01_cm"}
+    };
+
     vars.gameVersion = "Unknown";
 }
 
@@ -139,30 +150,13 @@ split
     // Skipped a cutscene.
     if (settings["cutscene_splits"] && current.cutsceneid != old.cutsceneid)
     {
-        // check if we're supposed to split on this cutscene
-        if (settings["vatican_birdwatching"] && current.cutsceneid == "cs/vatican/ch02se02_birdwatching01_cm")
+        // Check if we're supposed to split on this cutscene.
+        foreach (var cutsceneMapping in vars.cutsceneMappings)
         {
-            return true;
-        }
-        if (settings["vatican_inspectletter"] && current.cutsceneid == "cs/vatican/ch02se03_inspectletter02_cm")
-        {
-            return true;
-        }
-        if (settings["gizeh_stonetablets"] && current.cutsceneid == "cs/gizeh/ch03se01_stonetablets02_cm")
-        {
-            return true;
-        }
-        if (settings["gizeh_lighter"] && current.cutsceneid == "de/gizeh/ch03al01_asmaatalk01_de")
-        {
-            return true;
-        }
-        if (settings["gizeh_meetvoss"] && current.cutsceneid == "cs/gizeh/ch03se02_meetvoss02_cm")
-        {
-            return true;
-        }
-        if (settings["gizeh_carvings"] && current.cutsceneid == "cs/gizeh/ch03se03_carvings01_cm")
-        {
-            return true;
+            if (settings[cutsceneMapping.Key] && current.cutsceneid == cutsceneMapping.Value)
+            {
+                return true;
+            }
         }
     }
 

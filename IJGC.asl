@@ -68,8 +68,14 @@ startup
     settings.Add("cutscene_splits", false, "Cutscene Splits");
     settings.SetToolTip("cutscene_splits", "Enables automatic splitting on various cutscenes.");
 
+        settings.Add("vatican_camera", false, "Vatican (Camera)", "cutscene_splits");
+            settings.SetToolTip("vatican_camera", "Cutscene when Indy finds the Camera merchant.");
+        settings.Add("vatican_wine", false, "Vatican (Wine)", "cutscene_splits");
+            settings.SetToolTip("vatican_wine", "Cutscene when Indy and Antonio examine the photos and Antonio gives Indy a wine bottle.");
         settings.Add("vatican_birdwatching", false, "Vatican (Window Skip)", "cutscene_splits");
             settings.SetToolTip("vatican_birdwatching", "Cutscene when Voss arrives via airship and Indy spies on him with binoculars (after performing Window Skip).");
+        settings.Add("vatican_ginaappears", false, "Vatican (Gina Fountain)", "cutscene_splits");
+            settings.SetToolTip("vatican_ginaappears", "Cutscene when Gina appears at the Fountain of Confession and spooks Indy.");
         settings.Add("vatican_inspectletter", false, "Vatican (Trial Skip)", "cutscene_splits");
             settings.SetToolTip("vatican_inspectletter", "Cutscene when Indy investigates letter in Vatican secret library (after performing Trial Skip and interacting with letter through the wall).");
         settings.Add("gizeh_stonetablets", false, "Gizeh (Blue Tent)", "cutscene_splits");
@@ -84,7 +90,10 @@ startup
     // Map cutscene settings to their respective cutscene IDs.
     vars.cutsceneMappings = new Dictionary<string, string>
     {
+        {"vatican_camera", "de/vatican/ch02al01_ernestotalk01_de"},
+        {"vatican_wine", "cs/vatican/ch02se02_sacredwounds02_cm"},
         {"vatican_birdwatching", "cs/vatican/ch02se02_birdwatching01_cm"},
+        {"vatican_ginaappears", "cs/vatican/ch02se03_ginaappears01_cm"},
         {"vatican_inspectletter", "cs/vatican/ch02se03_inspectletter02_cm"},
         {"gizeh_stonetablets", "cs/gizeh/ch03se01_stonetablets02_cm"},
         {"gizeh_lighter", "de/gizeh/ch03al01_asmaatalk01_de"},

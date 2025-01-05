@@ -36,6 +36,9 @@ state("TheGreatCircle", "Game Pass") //120168448
 
 startup
 {
+    settings.Add("any_percent_ending", true, "Any% autoend.");
+    settings.SetToolTip("any_percent_ending", "Enables autoend for Any% category runs (split on cutscene when you grab Gina's hand).");
+
     settings.Add("map_splits", true, "Map Change Splits");
     settings.SetToolTip("map_splits", "Enables automatic splitting on various map changes.");
     
@@ -43,14 +46,18 @@ startup
             settings.SetToolTip("peru", "This setting does nothing because it's covered by autostart. The map is only listed here for completeness.");
         settings.Add("college_night", true, "College (Night)", "map_splits");
         settings.Add("college_day", false, "College (Day)", "map_splits");
-        settings.Add("vatican_intro", true, "Vatican (Night)", "map_splits");
-        settings.Add("vatican", false, "Vatican (Day)", "map_splits");
+        settings.Add("vatican_intro", true, "Vatican Castle (Night)", "map_splits");
+            settings.SetToolTip("vatican_intro", "Vatican intro map in the castle where you first meet Antonio.");
+        settings.Add("vatican_intro_day", false, "Vatican Castle (Day)", "map_splits");
+            settings.SetToolTip("vatican_intro", "Vatican map in the castle during daytime. Only visited if you backtrack.");
+        settings.Add("vatican", false, "Vatican City", "map_splits");
+            settings.SetToolTip("vatican", "You may not want to split here if you run All Ancient Relics or 100% because of backtracking for the Serpent's Chest.");
         settings.Add("vatican_exit", false, "Vatican (Finale)", "map_splits");
             settings.SetToolTip("vatican_exit", "Map where Indy boards the German airship with Gina.");
         settings.Add("gizeh_intro", true, "Gizeh (Intro)", "map_splits");
             settings.SetToolTip("gizeh_intro", "Inside the airship.");
         settings.Add("gizeh", false, "Gizeh", "map_splits");
-            settings.SetToolTip("gizeh", "Gizeh proper. You probably don't want to split here if you already split on gizeh_intro.");
+            settings.SetToolTip("gizeh", "Gizeh proper. You probably don't want to split here if you already split on gizeh_intro. You may not want to split here if you run All Ancient Relics or 100% category because of backtracking for the Serpent's Chest.");
         settings.Add("gizeh_outro", false, "Gizeh (Outro)", "map_splits");
             settings.SetToolTip("gizeh_outro", "Indy escapes the pyramid and gets buried in sand.");
         settings.Add("nepal_intro", true, "Nepal (Intro)", "map_splits");
@@ -60,10 +67,19 @@ startup
         settings.Add("nepal_ship_int", false, "Nepal (Ship Interior)", "map_splits");
         settings.Add("nepal_ship_ext", false, "Nepal (Ship Exterior)", "map_splits");
         settings.Add("shanghai", true, "Shanghai", "map_splits");
+            settings.SetToolTip("shanghai", "You may not want to split here if you run All Ancient Relics or 100% category because of backtracking for the Serpent's Chest.");
         settings.Add("sukhothai_intro", true, "Sukhothai (Hotel)", "map_splits");
         settings.Add("sukhothai", false, "Sukhothai (River)", "map_splits");
+            settings.SetToolTip("sukhothai", "You may not want to split here if you run All Ancient Relics or 100% category because of backtracking for the Serpent's Chest.");
         settings.Add("iraq", true, "Iraq (Encampment)", "map_splits");
         settings.Add("iraq_lake", false, "Iraq (Ark)", "map_splits");
+        // Used as map split as fallback for Any% runs in case the cutscene pointer breaks.
+        settings.Add("iraq_farewell", true, "Iraq (Outro)", "map_splits");
+            settings.SetToolTip("iraq_farewell", "You may not want to split here if you run All Ancient Relics or 100% category if you already split on iraq.");
+        // Split for ending All Ancient Relics or 100% category.
+        // TODO: Replace with a cutscene split when the big door is opening instead?
+        settings.Add("antarctica_outro", true, "Antarctica (Secret Ending)", "map_splits");
+            settings.SetToolTip("antarctica_outro", "Enable if you run All Ancient Relics or 100% category.");
 
     settings.Add("cutscene_splits", false, "Cutscene Splits");
     settings.SetToolTip("cutscene_splits", "Enables automatic splitting on various cutscenes.");
@@ -169,10 +185,8 @@ split
         }
     }
 
-    // Game end.
-    if ((current.level == "iraq_lake" && current.cutsceneid == "cs/iraq/ch06se02_washedover01_cm" && current.InCutscene == 1)
-    // Fallback in case the cutscene pointer breaks.
-        || current.level == "iraq_farewell")
+    // Game end for Any%.
+    if (settings["any_percent_ending"] && current.level == "iraq_lake" && current.cutsceneid == "cs/iraq/ch06se02_washedover01_cm" && current.InCutscene == 1)
     {
         return true;
     }

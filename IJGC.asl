@@ -76,10 +76,6 @@ startup
         // Used as map split as fallback for Any% runs in case the cutscene pointer breaks.
         settings.Add("iraq_farewell", true, "Iraq (Outro)", "map_splits");
             settings.SetToolTip("iraq_farewell", "You may not want to split here if you run All Ancient Relics or 100% category if you already split on iraq.");
-        // Split for ending All Ancient Relics or 100% category.
-        // TODO: Replace with a cutscene split when the big door is opening instead?
-        settings.Add("antarctica_outro", true, "Antarctica (Secret Ending)", "map_splits");
-            settings.SetToolTip("antarctica_outro", "Enable if you run All Ancient Relics or 100% category.");
 
     settings.Add("cutscene_splits", false, "Cutscene Splits");
     settings.SetToolTip("cutscene_splits", "Enables automatic splitting on various cutscenes.");

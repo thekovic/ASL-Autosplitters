@@ -94,10 +94,26 @@ startup
             settings.SetToolTip("gizeh_stonetablets", "Cutscene when Indy can exit the Blue Tent.");
         settings.Add("gizeh_lighter", false, "Gizeh (Lighter)", "cutscene_splits");
             settings.SetToolTip("gizeh_lighter", "Cutscene when Indy finds the Lighter merchant.");
+        settings.Add("gizeh_sanctuary_entry", false, "Gizeh (Sanctuary of the Guardians Entry)", "cutscene_splits");
+            settings.SetToolTip("gizeh_sanctuary_entry", "Cutscene when Indy and Gina enter the Sanctuary of the Guardians.");
+        settings.Add("gizeh_sanctuary_exit", false, "Gizeh (Sanctuary of the Guardians Exit)", "cutscene_splits");
+            settings.SetToolTip("gizeh_sanctuary_exit", "Cutscene when Indy and Gina exit the Sanctuary of the Guardians."); 
         settings.Add("gizeh_meetvoss", false, "Gizeh (Meet Voss)", "cutscene_splits");
             settings.SetToolTip("gizeh_meetvoss", "Cutscene where Indy meets Voss in the German encampment.");
+        settings.Add("gizeh_escape", false, "Gizeh (Camp Escape)", "cutscene_splits");
+            settings.SetToolTip("gizeh_escape", "Cutscene when Indy escapes the dig site with Nawal.");
         settings.Add("gizeh_carvings", false, "Gizeh (Resonance Chamber)", "cutscene_splits");
             settings.SetToolTip("gizeh_carvings", "Cutscene when Indy enters the Resonance Chamber and inspects the Adamic carvings.");
+        settings.Add("sukhothai_rebreather", false, "Sukhothai (Rebreather)", "cutscene_splits");
+            settings.SetToolTip("sukhothai_rebreather", "Cutscene when Indy finds the Rebreather merchant.");
+        settings.Add("sukhothai_pyramid_entry", false, "Sukhothai (Pyramid Entry)", "cutscene_splits");
+            settings.SetToolTip("sukhothai_pyramid_entry", "Cutscene when Indy and Gina find the Hidden Pyramid.");
+        settings.Add("sukhothai_pyramid_exit", false, "Sukhothai (Pyramid Exit)", "cutscene_splits");
+            settings.SetToolTip("sukhothai_pyramid_exit", "Cutscene when Indy and Gina leave the Hidden Pyramid.");
+        settings.Add("sukhothai_pailin", false, "Sukhothai (A Study in Fear)", "cutscene_splits");
+            settings.SetToolTip("sukhothai_pailin", "Cutscene when Indy receives the A Study in Fear quest from Pailin.");
+        settings.Add("sukhothai_stone", false, "Sukhothai (Stone Temple)", "cutscene_splits");
+            settings.SetToolTip("sukhothai_stone", "Cutscene when Indy and Gina find the entrance to the Stone Temple.");
 
     // Map cutscene settings to their respective cutscene IDs.
     vars.cutsceneMappings = new Dictionary<string, string>
@@ -109,8 +125,16 @@ startup
         {"vatican_inspectletter", "cs/vatican/ch02se03_inspectletter02_cm"},
         {"gizeh_stonetablets", "cs/gizeh/ch03se01_stonetablets02_cm"},
         {"gizeh_lighter", "de/gizeh/ch03al01_asmaatalk01_de"},
+        {"gizeh_sanctuary_entry", "pe/gizeh/ch03la02_lever01_pe"},
+        {"gizeh_sanctuary_exit", "cs/gizeh/ch03la02_leavingcave02_cm"},
         {"gizeh_meetvoss", "cs/gizeh/ch03se02_meetvoss02_cm"},
-        {"gizeh_carvings", "cs/gizeh/ch03se03_carvings01_cm"}
+        {"gizeh_escape", "cs/gizeh/ch03se02_exitdigsite01_cm"},
+        {"gizeh_carvings", "cs/gizeh/ch03se03_carvings01_cm"},
+        {"sukhothai_rebreather", "de/sukhothai/ch05al01_tongdangtalk01_de"},
+        {"sukhothai_pyramid_entry", "cs/sukhothai/ch05se02_enterarchive01_cm"},
+        {"sukhothai_pyramid_exit", "cs/sukhothai/ch05se02_mediator01_cm"},
+        {"sukhothai_pailin", "de/sukhothai/ch05la02_pailinexplosion02_de"},
+        {"sukhothai_stone", "cs/sukhothai/ch05se03_tunnel02_cm"}
     };
 
     vars.gameVersion = "Unknown";

@@ -38,6 +38,8 @@ startup
 {
     settings.Add("any_percent_ending", true, "Any% autoend.");
     settings.SetToolTip("any_percent_ending", "Enables autoend for Any% category runs (split on cutscene when you grab Gina's hand).");
+    settings.Add("secret_ending", false, "100% autoend.");
+    settings.SetToolTip("secret_ending", "Enables autoend for All Ancient Relics and 100% category runs (split on cutscene when Indy open the Relic Vault door).");
 
     settings.Add("map_splits", true, "Map Change Splits");
     settings.SetToolTip("map_splits", "Enables automatic splitting on various map changes.");
@@ -207,6 +209,12 @@ split
 
     // Game end for Any%.
     if (settings["any_percent_ending"] && current.level == "iraq_lake" && current.cutsceneid == "cs/iraq/ch06se02_washedover01_cm" && current.InCutscene == 1)
+    {
+        return true;
+    }
+
+    // Game end for All Ancient Relics and 100%.
+    if (settings["secret_ending"] && current.level == "iraq" && current.cutsceneid == "cs/iraq/ch06se02_endoftheworld02_cm" && current.InCutscene == 1)
     {
         return true;
     }

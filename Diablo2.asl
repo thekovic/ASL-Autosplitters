@@ -52,7 +52,7 @@ startup
         settings.Add("act1_outer_cloister", false, "Act 1: Outer Cloister", "split_area_entry");
         settings.Add("act1_inner_cloister", false, "Act 1: Inner Cloister", "split_area_entry");
         settings.Add("act2_lut_gholein", true, "Act 2: Lut Gholein", "split_area_entry");
-        settings.Add("act2_far_oasis", false, "Act 2: Far Oasis", "split_area_entry");
+        settings.Add("act2_maggot_lair", false, "Act 2: Maggot Lair", "split_area_entry");
         settings.Add("act2_valley_of_snakes", false, "Act 2: Valley of Snakes", "split_area_entry");
         settings.Add("act2_harem", false, "Act 2: Harem", "split_area_entry");
         settings.Add("act2_canyon_of_the_magi", false, "Act 2: Canyon of the Magi", "split_area_entry");
@@ -74,7 +74,7 @@ startup
         {"act1_outer_cloister", 27},
         {"act1_inner_cloister", 32},
         {"act2_lut_gholein", 40},
-        {"act2_far_oasis", 43},
+        {"act2_maggot_lair", 62},
         {"act2_valley_of_snakes", 44},
         {"act2_harem", 50},
         {"act2_canyon_of_the_magi", 46},

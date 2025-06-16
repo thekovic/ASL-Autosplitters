@@ -21,6 +21,14 @@ start
     }
 }
 
+split
+{
+    if (current.episode > old.episode || current.map > old.map)
+    {
+        return true;
+    }
+}
+
 gameTime
 {
     int delta = current.levelTicks - old.levelTicks;
@@ -32,14 +40,6 @@ gameTime
     vars.gameTimer += delta;
 
     return TimeSpan.FromSeconds(vars.gameTimer / 35f);
-}
-
-split
-{
-    if (current.episode > old.episode || current.map > old.map)
-    {
-        return true;
-    }
 }
 
 isLoading

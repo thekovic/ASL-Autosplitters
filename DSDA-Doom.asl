@@ -103,7 +103,7 @@ gameTime
             return TimeSpan.FromSeconds(vars.totalGameTime);
         }
 
-        return TimeSpan.FromSeconds(vars.totalGameTime + current.levelTics / 35f);
+        return TimeSpan.FromSeconds(vars.totalGameTime + current.levelTics / 35);
     }
 }
 

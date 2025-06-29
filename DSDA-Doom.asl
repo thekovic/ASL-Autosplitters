@@ -1,10 +1,19 @@
+state("dsda-doom", "0.29.2")
+{
+    int levelTics : 0xB11070;
+    int intermission : 0x88BE90;
+    int map : 0x987800;
+    int attempt : 0x970B88;
+    int isMenuOpen : 0xB32C2C;
+    int isDemoPlaying : 0xB35144;
+}
+
 state("dsda-doom", "0.29.0")
 {
     int levelTics : 0x97EF70;
     int intermission : 0x732590;
     int map : 0x72F7B4;
     int attempt : 0x8182EC;
-    int isPaused : 0x822D8C;
     int isMenuOpen : 0x9A0B4C;
     int isDemoPlaying : 0x9A3064;
 }
@@ -15,7 +24,6 @@ state("dsda-doom", "0.28.3")
     int intermission : 0x71fef0;
     int map : 0x71d114;
     int attempt : 0x810ad0;
-    int isPaused : 0x8105EC;
     int isMenuOpen : 0x98E7DC;
     int isDemoPlaying : 0x990BE8;
 }

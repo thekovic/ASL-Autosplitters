@@ -70,6 +70,22 @@ startup
     settings.Add("splitChecks", true, "Enable checks for duplicate map transitions.", "splitEveryMap");
     settings.SetToolTip("splitChecks",
     "When this setting is checked, every unique map change pair will trigger a split only once. This is to prevent duplicate and accidental splits.");
+
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show
+        (
+            "This game uses Game Time as default timing method \n"+
+            "LiveSplit is currently set to show Real Time.\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Wrong Timing Method",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
+        if (timingMessage == DialogResult.Yes)
+        {
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+        }
+    }
 }
 
 start

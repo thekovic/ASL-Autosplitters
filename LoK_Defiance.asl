@@ -26,6 +26,22 @@ startup
     settings.SetToolTip("light_forge_exit", "Add an additional split point after exiting the Light forge. Applies to Any% and Vorador%.");
     settings.Add("glitchless", false, "Enable Any% Glitchless");
     settings.SetToolTip("glitchless", "Enabling this option will switch to Glitchless splits (requires 23 splits). Overrides Vorador%.");
+
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show
+        (
+            "This game uses Game Time as default timing method \n"+
+            "LiveSplit is currently set to show Real Time.\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Wrong Timing Method",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
+        if (timingMessage == DialogResult.Yes)
+        {
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+        }
+    }
 }
 
 init

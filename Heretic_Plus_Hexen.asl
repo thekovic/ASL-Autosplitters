@@ -8,6 +8,22 @@ state("heretic", "August 7 2025, Steam")
 startup
 {
     vars.totalGameTime = 0f;
+
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show
+        (
+            "This game uses Game Time as default timing method \n"+
+            "LiveSplit is currently set to show Real Time.\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Wrong Timing Method",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
+        if (timingMessage == DialogResult.Yes)
+        {
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+        }
+    }
 }
 
 update

@@ -10,6 +10,22 @@ startup
 {
     settings.Add("pause", true, "Pause timer while in the Escape key pause menu");
     refreshRate = 30;
+
+    if (timer.CurrentTimingMethod == TimingMethod.RealTime)
+    {
+        var timingMessage = MessageBox.Show
+        (
+            "This game uses Game Time as default timing method \n"+
+            "LiveSplit is currently set to show Real Time.\n"+
+            "Would you like to set the timing method to Game Time?",
+            "LiveSplit | Wrong Timing Method",
+            MessageBoxButtons.YesNo, MessageBoxIcon.Question
+        );
+        if (timingMessage == DialogResult.Yes)
+        {
+            timer.CurrentTimingMethod = TimingMethod.GameTime;
+        }
+    }
 }
 
 init

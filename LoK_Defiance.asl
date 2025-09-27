@@ -109,10 +109,6 @@ update
 {
     vars.in_start_y = (vars.startY + vars.leniency > current.y) && (vars.startY - vars.leniency < current.y);
     vars.in_start_x = (vars.startX + vars.leniency > current.x) && (vars.startX - vars.leniency < current.x);
-    if (timer.CurrentPhase == TimerPhase.NotRunning)
-    {
-        vars.currentSplit = 0;
-    }
 }
 
 split
@@ -125,14 +121,16 @@ split
             return true;
         }
     }
-
-    // split on final boss death
-    if (settings["glitchless"])
+    // Split on final boss death.
+    else
     {
-        return (current.bossHP_glitchless == 0) && (current.bossHP_glitchless != old.bossHP_glitchless);
+        if (settings["glitchless"])
+        {
+            return (current.bossHP_glitchless == 0) && (current.bossHP_glitchless != old.bossHP_glitchless);
+        }
+        
+        return (current.bossHP == 0) && (current.bossHP != old.bossHP);
     }
-
-    return (current.bossHP == 0) && (current.bossHP != old.bossHP);
 }
 
 isLoading
@@ -164,4 +162,10 @@ start
         return true;
     }
     return false;
+}
+
+onReset
+{
+    vars.currentSplit = 0;
+    vars.waitingForStart = true;
 }

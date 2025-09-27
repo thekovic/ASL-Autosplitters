@@ -14,18 +14,72 @@ startup
     vars.startX = -3621.2f; //default position for shold1a
     vars.startY = -1271.6f; //default position for shold1a
     vars.leniency = 0.5f;
-    
-    vars.currentSplit = 0;
-    
-    vars.start = false;
-    vars.waitingForStart = false;
 
-    settings.Add("vorador", false, "Enable Vorador%");
-    settings.SetToolTip("vorador", "By default, Any% route is followed (requires 9 splits). Enabling this option will switch to Vorador% (requires 15 splits).");
-    settings.Add("light_forge_exit", false, "Split after exiting the Light forge");
-    settings.SetToolTip("light_forge_exit", "Add an additional split point after exiting the Light forge. Applies to Any% and Vorador%.");
-    settings.Add("glitchless", false, "Enable Any% Glitchless");
-    settings.SetToolTip("glitchless", "Enabling this option will switch to Glitchless splits (requires 23 splits). Overrides Vorador%.");
+    settings.Add("glitchless", false, "Enable Elder God end split for Any% Glitchless");
+    settings.SetToolTip("glitchless", "This option enables automatic split when you kill Elder God without dying and respawning at a checkpoint first (aka you reach him the intended way and kill him first try). Meant for Any% Glitchless. NOT RECOMMENDED to enable when running Any% and Vorador%.");
+
+    settings.Add("split_area_entry", true, "Enable progression split (triggers in order listed)");
+        settings.Add("ch2_start", true, "Chapter 2 (Raziel): Start", "split_area_entry");
+        settings.Add("ch2_escape", true, "Chapter 2 (Raziel): Escape from Underworld", "split_area_entry");
+        settings.Add("ch3_start", false, "Chapter 3 (Kain): Start", "split_area_entry");
+        settings.Add("ch4_start", false, "Chapter 4 (Raziel): Start", "split_area_entry");
+        settings.Add("ch4_dark", false, "Chapter 4 (Raziel): Enter Dark Forge (intended order)", "split_area_entry");
+            settings.SetToolTip("ch4_dark", "Meant for Any% Glitchless.");
+        settings.Add("ch4_light_enter", true, "Chapter 4 (Raziel): Enter Light Forge", "split_area_entry");
+        settings.Add("ch4_light_exit", false, "Chapter 4 (Raziel): Exit Light Forge", "split_area_entry");
+        settings.Add("ch4_dark2", true, "Chapter 4 (Raziel): Enter Dark Forge", "split_area_entry");
+            settings.SetToolTip("ch4_dark", "Meant for Any% and Vorador%.");
+        settings.Add("ch5_start", true, "Chapter 5 (Kain): Start", "split_area_entry");
+        settings.Add("ch6_start", true, "Chapter 6 (Raziel): Start", "split_area_entry");
+        settings.Add("ch6_fire", false, "Chapter 6 (Raziel): Enter Fire Forge", "split_area_entry");
+        settings.Add("ch6_air", false, "Chapter 6 (Raziel): Enter Air Forge", "split_area_entry");
+        settings.Add("ch7_start", true, "Chapter 7 (Kain): Start", "split_area_entry");
+        settings.Add("ch7_water", false, "Chapter 7 (Kain): Enter Water Forge", "split_area_entry");
+        settings.Add("ch8_start", false, "Chapter 8 (Raziel): Start", "split_area_entry");
+        settings.Add("ch8_pool", false, "Chapter 8 (Raziel): Reach gargoyle pool room", "split_area_entry");
+        settings.Add("ch8_water", false, "Chapter 8 (Raziel): Enter Water Forge", "split_area_entry");
+        settings.Add("ch8_crypt", false, "Chapter 8 (Raziel): Enter the Crypt", "split_area_entry");
+        settings.Add("ch9_start", false, "Chapter 9 (Kain): Start", "split_area_entry");
+        settings.Add("ch9_air", false, "Chapter 9 (Kain): Enter Air Forge", "split_area_entry");
+        settings.Add("ch10_start", false, "Chapter 10 (Raziel): Start", "split_area_entry");
+        settings.Add("ch10_catacombs", false, "Chapter 10 (Raziel): Enter the Catacombs", "split_area_entry");
+        settings.Add("ch11_start", false, "Chapter 11 (Kain): Start", "split_area_entry");
+        settings.Add("ch12_mansion", false, "Chapter 12 (Raziel): Revisit Vorador's Mansion", "split_area_entry");
+        settings.Add("ch12_citadel", false, "Chapter 12 (Raziel): Reach Vampire Citadel with Janos", "split_area_entry");
+        settings.Add("ch13_start", false, "Chapter 13 (Kain): Start", "split_area_entry");
+        settings.Add("ch13_eg", true, "Chapter 13 (Kain): Reach Elder God", "split_area_entry");
+
+    // Map area split settings to their respective IDs.
+    vars.areaMappings = new Dictionary<string, string>
+    {
+        {"ch2_start", "eldergod1a"},
+        {"ch2_escape", "cemetery1A"},
+        {"ch3_start", "shold14a"},
+        {"ch4_start", "cemetery3a"},
+        {"ch4_dark", "CITADEL14A"},
+        {"ch4_light_enter", "CITADEL10A"},
+        {"ch4_light_exit", "CEMETERY11A"},
+        {"ch4_dark2", "CITADEL14A"},
+        {"ch5_start", "SNOW_PILLARS10A"},
+        {"ch6_start", "pillars9a"},
+        {"ch6_fire", "CITADEL11A"},
+        {"ch6_air", "CITADEL9A"},
+        {"ch7_start", "CIT_EARLY1A"},
+        {"ch7_water", "CIT_EARLY12A"},
+        {"ch8_start", "vorador1A"},
+        {"ch8_pool", "vorador5A"},
+        {"ch8_water", "CITADEL12A"},
+        {"ch8_crypt", "vorador21A"},
+        {"ch9_start", "cit_early8a"},
+        {"ch9_air", "CIT_EARLY9A"},
+        {"ch10_start", "avernus99a"},
+        {"ch10_catacombs", "avernus3A"},
+        {"ch11_start", "AVERNUS1A"},
+        {"ch12_mansion", "vorador_ruin10a"},
+        {"ch12_citadel", "citadel1a"},
+        {"ch13_start", "avernus6a"},
+        {"ch13_eg", "citadel6A"}
+    };
 
     if (timer.CurrentTimingMethod == TimingMethod.RealTime)
     {
@@ -46,63 +100,10 @@ startup
 
 init
 {
+    vars.currentSplit = 0;
+    vars.start = false;
+    vars.waitingForStart = false;
     vars.splits = new List<string>();
-    
-    if (settings["glitchless"])
-    {
-        vars.splits.Add("eldergod1a");          // Chapter 2 start
-        vars.splits.Add("shold14a");            // Chapter 3 start
-        vars.splits.Add("cemetery3a");          // Chapter 4 start
-        vars.splits.Add("CITADEL14A");          // Chapter 4 enter dark forge
-        vars.splits.Add("CITADEL10A");          // Chapter 4 enter light forge
-        vars.splits.Add("SNOW_PILLARS10A");     // Chapter 5 start
-        vars.splits.Add("pillars9a");           // Chapter 6 start
-        vars.splits.Add("CITADEL9A");           // Chapter 6 enter air forge
-        vars.splits.Add("CIT_EARLY1A");         // Chapter 7 start
-        vars.splits.Add("CIT_EARLY12A");        // Chapter 7 enter water forge
-        vars.splits.Add("vorador1A");           // Chapter 8 start
-        vars.splits.Add("vorador5A");           // Chapter 8 gargoyles
-        vars.splits.Add("CITADEL12A");          // Chapter 8 enter water forge
-        vars.splits.Add("cit_early8a");         // Chapter 9 start
-        vars.splits.Add("CIT_EARLY9A");         // Chapter 9 enter air forge
-        vars.splits.Add("avernus99a");          // Chapter 10 start
-        vars.splits.Add("avernus3A");           // Chapter 10 catacombs
-        vars.splits.Add("AVERNUS1A");           // Chapter 11 start
-        vars.splits.Add("vorador_ruin10a");     // Chapter 12 return to mansion
-        vars.splits.Add("citadel1a");           // Chapter 12 revive janos
-        vars.splits.Add("avernus6a");           // Chapter 13 start
-        vars.splits.Add("citadel6A");           // Chapter 15 reach eg
-    }
-    else
-    {
-        vars.splits.Add("eldergod1a");          // Chapter 2 (Raziel)
-        vars.splits.Add("cemetery1A");          // Escape from Underworld
-        vars.splits.Add("CITADEL10A");          // Enter Light forge
-        if (settings["light_forge_exit"])
-        {
-            vars.splits.Add("CEMETERY11A");     // Exit Light forge
-        }
-        vars.splits.Add("CITADEL14A");          // Enter Dark forge
-        vars.splits.Add("SNOW_PILLARS10A");     // Chapter 5 (Kain)
-        vars.splits.Add("pillars9a");           // Chapter 6 (Raziel)
-        if (settings["vorador"])
-        {
-            vars.splits.Add("CITADEL11A");      // Enter Fire forge
-            vars.splits.Add("CIT_EARLY1A");     // Chapter 7 (Kain)
-            vars.splits.Add("CIT_EARLY12A");    // Collect Reaver emblem
-            vars.splits.Add("vorador1A");       // Chapter 8 (Raziel)
-            vars.splits.Add("CITADEL12A");      // Enter Water forge
-            vars.splits.Add("vorador21A");      // Crypt done
-            vars.splits.Add("cit_early1A");     // Chapter 9 (Kain)
-        }
-        else
-        {
-            vars.splits.Add("CIT_EARLY1A");     // Chapter 7 (Kain)
-        }
-        vars.splits.Add("citadel6A");           // Enter Elder God fight
-    }
-
-    vars.splits = vars.splits.ToArray();
 }
 
 update
@@ -113,7 +114,7 @@ update
 
 split
 {
-    if (vars.currentSplit < vars.splits.Length)
+    if (vars.currentSplit < vars.splits.Count)
     {
         if ((current.cell == vars.splits[vars.currentSplit]) && (current.cell != old.cell))
         {
@@ -144,6 +145,7 @@ reset
     {
         vars.currentSplit = 0;
         vars.waitingForStart = true;
+        vars.splits.Clear();
         return true;
     }
     return false;
@@ -158,6 +160,18 @@ start
    
     if (vars.waitingForStart == true && current.cell == vars.startZone && !(vars.in_start_y && vars.in_start_x))
     {
+        if (vars.splits.Count == 0)
+        {
+            // Fill splits for the upcoming run.
+            foreach (var areaMapping in vars.areaMappings)
+            {
+                if (settings[areaMapping.Key])
+                {
+                    vars.splits.Add(areaMapping.Value);
+                }
+            }
+        }
+
         vars.waitingForStart = false;
         return true;
     }
@@ -167,5 +181,6 @@ start
 onReset
 {
     vars.currentSplit = 0;
-    vars.waitingForStart = true;
+    vars.waitingForStart = false;
+    vars.splits.Clear();
 }

@@ -86,6 +86,12 @@ gameTime
     {
         delta = 0;
     }
+    // In Hexen, there's one tic of large delta when repeatedly travelling through the same portal.
+    // I don't understand why so let's just add a hack to ignore it.
+    if (delta > 35)
+    {
+        delta = 1;
+    }
 
     vars.totalGameTime += delta;
 

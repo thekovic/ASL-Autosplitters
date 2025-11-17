@@ -1,4 +1,4 @@
-state("heretic", "August 7 2025, Steam")
+state("heretic", "August 7 2025 Steam")
 {
     ulong base_ptr: 0x01248588;
     int ticks: 0x01248588, 0x9E8C;
@@ -10,6 +10,13 @@ state("heretic", "Sep 4 2025 Steam")
     ulong base_ptr: 0x012634E8;
     int ticks: 0x012634E8, 0x9FE4;
     int intermission: 0x012634E8, 0x5AB0;
+}
+
+state("heretic", "Oct 16 2025 Steam")
+{
+    ulong base_ptr: 0x012723E8;
+    int ticks: 0x012723E8, 0x9FE4;
+    int intermission: 0x012723E8, 0x5AB0;
 }
 
 startup
@@ -40,6 +47,9 @@ init
         // TODO: Add module size for release day version.
         case 21934080: // 15.9 MB (16,763,312 bytes)
             version = "Sep 4 2025 Steam";
+            break;
+        case 22204416: // 16.0 MB (16,825,784 bytes)
+            version = "Oct 16 2025 Steam";
             break;
         default:
             version = "UNKNOWN";

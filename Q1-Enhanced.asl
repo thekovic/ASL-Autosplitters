@@ -54,7 +54,7 @@ init
         "end", "hipend", "r2m8", "e5end", "mgend", "nend"
     };
     vars.episodeStarts = new string[] {
-        "e1m1", "e2m1", "e3m1", "e4m1", "hip1m1", "hip2m1", "hip2m3", "r1m1", "r2m1", "mge1m1", "mge2m1", "mge3m1", "mge4m1", "mge5m1"
+        "e1m1", "e2m1", "e3m1", "e4m1", "hip1m1", "hip2m1", "hip3m1", "r1m1", "r2m1", "mge1m1", "mge2m1", "mge3m1", "mge4m1", "mge5m1"
     };
     vars.episodeEnds = new string[] {
         "e1m7", "e2m6", "e3m6", "e4m7", "hip1m4", "hip2m5", "hipend", "r1m7", "r2m8", "mge1m2", "mge2m2", "mge3m2", "mge4m2", "mge5m2"

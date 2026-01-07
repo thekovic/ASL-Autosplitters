@@ -1,8 +1,15 @@
-state("Quake_x64_steam", "Steam")
+state("Quake_x64_steam", "Steam Aug 18 2022 Update 4")
 {
     string255 map: 0x18DDE30;
     int intermission: 0x9DD3AEC;
     int menu: 0xE7AC84;
+}
+
+state("Quake_x64_steam", "Steam Dec 8 2025 Steam Deck Update")
+{
+    string255 map: 0x1837D90;
+    int intermission: 0x9E0F48C;
+    int menu: 0xE6866C;
 }
 
 state("Quake_Shipping_Playfab_GOG_x64", "GOG")
@@ -29,8 +36,11 @@ init
     switch (modules.First().ModuleMemorySize)
     {
         case 166821888:
-            version = "Steam";
+            version = "Steam Aug 18 2022 Update 4";
             break;
+        case 166813696:
+            version = "Steam Dec 8 2025 Steam Deck Update";
+            break;    
         case 166580224:
             version = "GOG";
             break;

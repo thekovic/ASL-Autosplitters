@@ -101,13 +101,14 @@ start
 
 split
 {   
-    //Split by level
-    if (current.levelNumber > old.levelNumber)
+    // Split by level. Check if old ID is 0 to prevent fake split if game was restarted (due to crash or softlock).
+    // FIXME: Not allowing ID=0 is too restrictive for custom levels but none exist so we'll care about it later.
+    if (current.levelNumber > old.levelNumber && old.levelNumber != 0)
     {
         return true; 
     }
     
-    //Split by treasure
+    // Split by treasure
     if (settings["all_treasures"] && current.treasureCounter > old.treasureCounter)
     {
         return true;

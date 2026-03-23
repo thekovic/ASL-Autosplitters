@@ -1,4 +1,4 @@
-state("defiance")
+state("defiance", "Classic")
 {
     float x :               0x14d4d8;
     float y :               0x14d4dc;
@@ -6,6 +6,15 @@ state("defiance")
     int bossHP :            0x20182c, 0x194;  // pointer for Elder God HP when checkpoint used
     int bossHP_glitchless : 0x2242d0, 0x1b0;  // pointer for Elder God HP directly from cutscene
     int gameState :         0x224598;
+}
+
+state("defiance", "Remastered")
+{
+    float x :               0x660650;
+    float y :               0x660654;
+    string15 cell :         0x17FB068;
+    int bossHP :            0xc27978, 0x574;
+    int bossHP_glitchless : 0xc27978, 0x574;  // Untested
 }
 
 startup
@@ -24,11 +33,11 @@ startup
         settings.Add("ch3_start", false, "Chapter 3 (Kain): Start", "split_area_entry");
         settings.Add("ch4_start", false, "Chapter 4 (Raziel): Start", "split_area_entry");
         settings.Add("ch4_dark", false, "Chapter 4 (Raziel): Enter Dark Forge (intended order)", "split_area_entry");
-            settings.SetToolTip("ch4_dark", "Meant for Any% Glitchless.");
+            settings.SetToolTip("ch4_dark", "Meant for Any% Glitchless or Remastered runs.");
         settings.Add("ch4_light_enter", true, "Chapter 4 (Raziel): Enter Light Forge", "split_area_entry");
         settings.Add("ch4_light_exit", false, "Chapter 4 (Raziel): Exit Light Forge", "split_area_entry");
         settings.Add("ch4_dark2", true, "Chapter 4 (Raziel): Enter Dark Forge", "split_area_entry");
-            settings.SetToolTip("ch4_dark", "Meant for Any% and Vorador%.");
+            settings.SetToolTip("ch4_dark", "Meant for Any% and Vorador% (original game version).");
         settings.Add("ch5_start", true, "Chapter 5 (Kain): Start", "split_area_entry");
         settings.Add("ch6_start", true, "Chapter 6 (Raziel): Start", "split_area_entry");
         settings.Add("ch6_fire", false, "Chapter 6 (Raziel): Enter Fire Forge", "split_area_entry");
@@ -48,6 +57,7 @@ startup
         settings.Add("ch12_citadel", false, "Chapter 12 (Raziel): Reach Vampire Citadel with Janos", "split_area_entry");
         settings.Add("ch13_start", false, "Chapter 13 (Kain): Start", "split_area_entry");
         settings.Add("ch13_eg", true, "Chapter 13 (Kain): Reach Elder God", "split_area_entry");
+        settings.Add("ch13_end", true, "Chapter 13 (Kain): Final cutscene in Remaster only. Used as backup in case Elder God pointer fails.", "split_area_entry");
 
     // Map area split settings to their respective IDs.
     vars.areaMappings = new Dictionary<string, string>
@@ -78,7 +88,8 @@ startup
         {"ch12_mansion", "vorador_ruin10a"},
         {"ch12_citadel", "citadel1a"},
         {"ch13_start", "avernus6a"},
-        {"ch13_eg", "citadel6A"}
+        {"ch13_eg", "citadel6A"},
+        {"ch13_end", "citadel1a"}
     };
 
     if (timer.CurrentTimingMethod == TimingMethod.RealTime)
@@ -100,6 +111,16 @@ startup
 
 init
 {
+    switch (modules.First().FileVersionInfo.FileVersion)
+    {
+        case "2.0": // 6.92 MB (7,260,784 bytes)
+            version = "Remastered";
+            break;
+        default:
+            version = "Classic";
+            break;
+    }
+
     vars.currentSplit = 0;
     vars.start = false;
     vars.waitingForStart = false;
@@ -123,7 +144,7 @@ split
         }
     }
     // Split on final boss death.
-    else
+    else if (current.cell == "citadel6A")
     {
         if (settings["glitchless"])
         {
@@ -136,6 +157,10 @@ split
 
 isLoading
 {
+    if (version == "Remastered") {
+        return false;
+    }
+
     return (current.gameState == 2);
 }
 

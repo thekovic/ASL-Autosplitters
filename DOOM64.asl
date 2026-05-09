@@ -47,7 +47,10 @@ init
 start
 {
     if (
+        // Autostart in MAP01 (vanilla) or MAP34 (start of Lost Levels) always.
+        // Autostart anywhere if in IL mode.
         ( (current.map == 1 || current.map == 34) || (settings["ILstart"] && current.map != 33) )
+        // Starting on difficulty selection is technically unfeasible, we start when we enter the in-game state.
         && current.gameState == 1 && current.playerHealth != 0 && current.pause != 1
     )
     {
@@ -72,7 +75,7 @@ gameTime
 split
 {
     // Split on level change.
-    if (current.map > old.map)
+    if (current.map != old.map)
     {
         // We need to add one tic every level start because DOOM doesn't start from tic 0.
         vars.totalGameTime += 1;
@@ -81,8 +84,11 @@ split
 
     // Split on game ending.
     if (
+        // Vanilla game end (Absolution).
         (current.map == 28 && current.gameState == 4) ||
+        // Lost Levels game end.
         (current.map == 39 && current.gameState == 4) ||
+        // Warped category glitch ending.
         (current.map == 30 && current.gameState == 4 && settings["warped"])
     )
     {
@@ -92,10 +98,12 @@ split
 
 reset
 {
+    // Disable autoreset if the Warped category glitch ending was triggered.
     if (current.warpTarget == 70)
     {
         return false;
     }
+    // Reset on going back to main menu.
     if (current.mainMenu == 1 && current.pause == 1)
     {
         vars.totalGameTime = 0f;
